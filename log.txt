@@ -1,2 +1,4 @@
+26a77d6 complete Task 2.1 Switch
+d790337 complete Task 1.2 Git Log
 243bc7f complete Task 1.1 CheckStyle
 93e08ac Initial commit
