@@ -1,3 +1,5 @@
+a9ac9a5 complete Task 2.4
+436de11 complete Task 2.3 Removing frmt
 c0bc6a5 complete Task 2.2 Volume credits
 26a77d6 complete Task 2.1 Switch
 d790337 complete Task 1.2 Git Log
