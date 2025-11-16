@@ -6,6 +6,8 @@ import java.util.Map;
 
 /**
  * This class generates a statement for a given invoice of performances.
+ *
+ * @null nothing
  */
 public class StatementPrinter {
     private final Invoice invoice;
@@ -18,6 +20,7 @@ public class StatementPrinter {
 
     /**
      * Returns a formatted statement of the invoice associated with this printer.
+     *
      * @return the formatted statement
      * @throws RuntimeException if one of the play types is not known
      */
@@ -27,23 +30,21 @@ public class StatementPrinter {
         final StringBuilder result =
                 new StringBuilder("Statement for " + invoice.getCustomer() + System.lineSeparator());
 
-        final NumberFormat frmt = NumberFormat.getCurrencyInstance(Locale.US);
-
         for (Performance performance : invoice.getPerformances()) {
 
             // add volume credits
             volumeCredits += getVolumeCredits(performance);
 
             // print line for this order
-            result.append(
-                    String.format(
-                            "  %s: %s (%s seats)%n",
-                            getPlay(performance).getName(),
-                            frmt.format(getAmount(performance) / Constants.PERCENT_FACTOR),
-                            performance.getAudience()));
+            result.append(String.format(
+                    "  %s: %s (%s seats)%n",
+                    getPlay(performance).getName(),
+                    usd(getAmount(performance)),
+                    performance.getAudience()));
             totalAmount += getAmount(performance);
         }
-        result.append(String.format("Amount owed is %s%n", frmt.format(totalAmount / Constants.PERCENT_FACTOR)));
+
+        result.append(String.format("Amount owed is %s%n", usd(totalAmount)));
         result.append(String.format("You earned %s credits%n", volumeCredits));
         return result.toString();
     }
@@ -87,5 +88,16 @@ public class StatementPrinter {
                         "unknown type: %s", getPlay(performance).getType()));
         }
         return result;
+    }
+
+    /**
+     * Formats an amount in cents as a US currency string.
+     *
+     * @param amount amount in cents
+     * @return formatted US currency string
+     */
+    private String usd(int amount) {
+        return NumberFormat.getCurrencyInstance(Locale.US)
+                .format(amount / Constants.PERCENT_FACTOR);
     }
 }
